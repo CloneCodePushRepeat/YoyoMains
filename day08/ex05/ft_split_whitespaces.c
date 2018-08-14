@@ -6,19 +6,21 @@
 /*   By: yforeau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/08 17:06:54 by yforeau           #+#    #+#             */
-/*   Updated: 2018/08/08 17:08:47 by yforeau          ###   ########.fr       */
+/*   Updated: 2018/08/14 06:56:07 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-void	split(char *str, int size, char ***no_white)
+char	**ft_split_whitespaces(char *str)
 {
-	int		l;
-	int		i;
-	char	*ptr;
+	static int	size = 0;
+	int			l;
+	int			i;
+	char		*p;
+	char		**tb;
 
-	ptr = 0;
+	p = 0;
 	size++;
 	while (*str && (*str == 32 || (*str > 8 && *str < 12)))
 		str++;
@@ -27,22 +29,13 @@ void	split(char *str, int size, char ***no_white)
 		l++;
 	if (l)
 	{
-		ptr = (char *)malloc(l + 1);
+		p = (char *)malloc(l + 1);
 		i = 0;
 		while (*str && l--)
-			ptr[i++] = *str++;
-		ptr[i] = '\0';
-		split(str, size, no_white);
+			p[i++] = *str++;
+		p[i] = '\0';
 	}
-	else
-		*no_white = (char **)malloc(size * sizeof(char *));
-	(*no_white)[--size] = ptr;
-}
-
-char	**ft_split_whitespaces(char *str)
-{
-	char	**no_white;
-
-	split(str, 0, &no_white);
-	return (no_white);
+	tb = p ? ft_split_whitespaces(str) : (char **)malloc(size * sizeof(char *));
+	tb[--size] = p;
+	return (tb);
 }
